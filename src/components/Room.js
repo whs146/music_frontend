@@ -12,6 +12,7 @@ import RoomCreatePage from "./RoomCreatePage";
 import { makeStyles } from "@material-ui/styles";
 import { useEffect } from "react";
 import MusicPlayer from "./MusicPlayer";
+import axios from "axios";
 
 const Room = () => {
   // const state={votesToSkip:2,guestCanPause:false,isHost:false}
@@ -31,7 +32,8 @@ const Room = () => {
   
   const getRoomDetails = () => {
     // console.log(state)
-     fetch("/api/get-room" + "?code=" + roomCode)
+    //  fetch("/api/get-room" + "?code=" + roomCode)
+    axios.get('https://pppsd.herokuapp.com/api/get-room' + "?code=" + roomCode)
       .then((response) => {
         //clear the room code when leave the room
 
@@ -72,7 +74,9 @@ const Room = () => {
   // useEffect(()=>{interval=setInterval(getCurrentSong),1000},[])
   // useEffect(()=>{return clearInterval(interval)})
  const getCurrentSong=()=>{
-   fetch("/spotify/current-song").then((response)=>{
+  //  fetch("/spotify/current-song")
+   axios.get('https://pppsd.herokuapp.com/spotify/current-song')
+   .then((response)=>{
      if(!response.ok){
        return {};
      }
@@ -149,7 +153,10 @@ const Room = () => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
     };
-    fetch("/api/leave-room", requestOptions).then((response) => {
+    // fetch("/api/leave-room"
+    
+    axios.post('https://pppsd.herokuapp.com/api/leave-room'
+    , requestOptions).then((response) => {
       clearRoomCode();
       navigate("/");
     });
@@ -174,11 +181,15 @@ const Room = () => {
   const authenticateSpotify=()=>{
     // console.log(state)
     // console.log('authenticateSpotify')
-     fetch('/spotify/is-authenticated').then((response)=>response.json()).then((data)=>{
+    //  fetch('/spotify/is-authenticated')
+     axios.get('https://pppsd.herokuapp.com/spotify/is-authenticated')
+     .then((response)=>response.json()).then((data)=>{
       setState({...state,spotifyAuthenticated:data.status,})
       // console.log(state);
       if(!data.status){
-        fetch('/spotify/get-auth-url').then((response)=>response.json()).then((data)=>{
+        // fetch('/spotify/get-auth-url')
+        axios.get('https://pppsd.herokuapp.com/spotify/get-auth-url')
+        .then((response)=>response.json()).then((data)=>{
           window.location.replace(data.url);
         })
       }

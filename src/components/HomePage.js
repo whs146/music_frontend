@@ -7,7 +7,7 @@ import {
   Container,
 } from "@material-ui/core";
 import { Link, Navigate } from "react-router-dom";
-
+import axios from "axios";
 import { useEffect } from "react";
 
 const HomePage = () => {
@@ -17,7 +17,7 @@ const HomePage = () => {
 
   const Redirect = (code) => {
     if (code != null) {
-      return <Navigate to={`/room/${this.state.roomCode}`} />;
+      return <Navigate to={`https://pppsd.herokuapp.com/room/${this.state.roomCode}`} />;
     }
   };
   // useEffect(async () => {
@@ -29,7 +29,8 @@ const HomePage = () => {
   // });
 
   useEffect(() => {
-     fetch("api/user-in-room")
+    //  fetch("api/user-in-room")
+    axios.get('https://pppsd.herokuapp.com/api/user-in-room')
       .then((response) => response.json())
       .then((data) => {
         setState({ roomCode: data.code });
@@ -58,7 +59,7 @@ const HomePage = () => {
   // }
   // componentDidMount()
   if (state.roomCode != null) {
-    return <Navigate to={`/room/${state.roomCode}`} />;
+    return <Navigate to={`https://pppsd.herokuapp.com/room/${state.roomCode}`} />;
   }
 
   return (

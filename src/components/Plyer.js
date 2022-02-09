@@ -3,6 +3,7 @@ import { useCallback } from "react";
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
+import axios from "axios";
 
 
 
@@ -16,7 +17,8 @@ const Plyer = (props) => {
     // console.log(token)
     
     async function getToken() {
-      const response = await fetch('/spotify/get-key');
+      // const response = await fetch('/spotify/get-key');
+      const response=await axios.get('')
       const json = await response.json();
       // console.log(json)
       token=json
